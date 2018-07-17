@@ -35,9 +35,9 @@ public class AbsolutePathResolver {
      *            ../part1/part2)
      * @return parameter/node absolute path
      */
-    public String resolveProperty(final String nodePath, final String parameterReference) {
+    public String resolvePath(final String nodePath, final String parameterReference) {
         check(nodePath, parameterReference);
-        return doResolveProperty(nodePath, normalizePath(parameterReference));
+        return doResolvePath(nodePath, normalizePath(parameterReference));
     }
 
     private void check(final String nodePath, final String parameterReference) {
@@ -65,7 +65,7 @@ public class AbsolutePathResolver {
         return (parameterReference.startsWith(".") ? "" : "../") + parameterReference;
     }
 
-    private String doResolveProperty(final String nodePath, final String parameterReference) {
+    private String doResolvePath(final String nodePath, final String parameterReference) {
         if (".".equals(parameterReference)) {
             return nodePath;
         }

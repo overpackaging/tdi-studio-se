@@ -57,6 +57,7 @@ import org.talend.sdk.component.studio.model.parameter.listener.ActionParameters
 import org.talend.sdk.component.studio.model.parameter.listener.ActiveIfListener;
 import org.talend.sdk.component.studio.model.parameter.listener.ValidationListener;
 import org.talend.sdk.component.studio.model.parameter.listener.ValidatorFactory;
+import org.talend.sdk.component.studio.model.parameter.resolver.AbsolutePathResolver;
 import org.talend.sdk.component.studio.util.TaCoKitConst;
 import org.talend.sdk.component.studio.util.TaCoKitUtil;
 
@@ -107,6 +108,8 @@ public class SettingVisitor implements PropertyVisitor {
             new LinkedHashMap<>();
 
     private final List<ParameterResolver> actionResolvers = new ArrayList<>();
+    
+    private final AbsolutePathResolver pathResolver = new AbsolutePathResolver();
 
     public SettingVisitor(final IElement iNode,
             final ElementParameter redrawParameter, final ConfigTypeNode config) {
@@ -503,7 +506,7 @@ public class SettingVisitor implements PropertyVisitor {
 
         node.getProperty().getCondition()
                 .forEach(c -> {
-                    c.setTargetPath(AbstractParameterResolver.resolve(node, c.getTarget()));
+                    c.setTargetPath(pathResolver.resolvePath(node.getProperty().getPath(), c.getTarget()));
                     activations.computeIfAbsent(origin.getProperty().getPath(), (key) -> new HashMap<>());
                     activations.get(origin.getProperty().getPath()).computeIfAbsent(level, (k) -> new ArrayList<>());
                     activations.get(origin.getProperty().getPath()).get(level).add(c);
