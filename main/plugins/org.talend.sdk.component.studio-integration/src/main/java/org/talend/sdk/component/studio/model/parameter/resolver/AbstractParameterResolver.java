@@ -1,9 +1,10 @@
-package org.talend.sdk.component.studio.model.parameter;
+package org.talend.sdk.component.studio.model.parameter.resolver;
 
 import java.util.Map;
 
 import org.talend.core.model.process.IElementParameter;
-import org.talend.sdk.component.studio.model.parameter.resolver.AbsolutePathResolver;
+import org.talend.sdk.component.studio.model.parameter.PropertyNode;
+import org.talend.sdk.component.studio.model.parameter.TaCoKitElementParameter;
 
 /**
  * Common super class for ParameterResolvers. It contains common state and functionality

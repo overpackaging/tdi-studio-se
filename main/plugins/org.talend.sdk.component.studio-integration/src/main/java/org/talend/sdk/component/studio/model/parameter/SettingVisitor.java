@@ -58,6 +58,10 @@ import org.talend.sdk.component.studio.model.parameter.listener.ActiveIfListener
 import org.talend.sdk.component.studio.model.parameter.listener.ValidationListener;
 import org.talend.sdk.component.studio.model.parameter.listener.ValidatorFactory;
 import org.talend.sdk.component.studio.model.parameter.resolver.AbsolutePathResolver;
+import org.talend.sdk.component.studio.model.parameter.resolver.HealthCheckResolver;
+import org.talend.sdk.component.studio.model.parameter.resolver.ParameterResolver;
+import org.talend.sdk.component.studio.model.parameter.resolver.SuggestionsResolver;
+import org.talend.sdk.component.studio.model.parameter.resolver.ValidationResolver;
 import org.talend.sdk.component.studio.util.TaCoKitConst;
 import org.talend.sdk.component.studio.util.TaCoKitUtil;
 

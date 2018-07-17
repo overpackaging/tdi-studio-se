@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.talend.sdk.component.studio.model.parameter;
+package org.talend.sdk.component.studio.model.parameter.resolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,9 +25,11 @@ import org.talend.sdk.component.server.front.model.ActionReference;
 import org.talend.sdk.component.server.front.model.SimplePropertyDefinition;
 import org.talend.sdk.component.studio.model.action.Action;
 import org.talend.sdk.component.studio.model.action.ActionParameter;
+import org.talend.sdk.component.studio.model.parameter.PropertyNode;
+import org.talend.sdk.component.studio.model.parameter.TaCoKitElementParameter;
 import org.talend.sdk.component.studio.model.parameter.listener.ActionParametersUpdater;
 
-class SuggestionsResolver extends AbstractParameterResolver {
+public class SuggestionsResolver extends AbstractParameterResolver {
     
     private final ActionReference action;
     

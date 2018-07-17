@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.talend.sdk.component.studio.model.parameter;
+package org.talend.sdk.component.studio.model.parameter.resolver;
 
 import java.util.Collection;
 import java.util.Map;
@@ -26,6 +26,13 @@ import org.talend.sdk.component.server.front.model.ActionReference;
 import org.talend.sdk.component.studio.i18n.Messages;
 import org.talend.sdk.component.studio.model.action.Action;
 import org.talend.sdk.component.studio.model.action.SettingsActionParameter;
+import org.talend.sdk.component.studio.model.parameter.ButtonParameter;
+import org.talend.sdk.component.studio.model.parameter.PathCollector;
+import org.talend.sdk.component.studio.model.parameter.PropertyDefinitionDecorator;
+import org.talend.sdk.component.studio.model.parameter.PropertyNode;
+import org.talend.sdk.component.studio.model.parameter.PropertyTreeCreator;
+import org.talend.sdk.component.studio.model.parameter.TaCoKitElementParameter;
+import org.talend.sdk.component.studio.model.parameter.WidgetTypeMapper;
 import org.talend.sdk.component.studio.model.parameter.command.AsyncAction;
 
 /**

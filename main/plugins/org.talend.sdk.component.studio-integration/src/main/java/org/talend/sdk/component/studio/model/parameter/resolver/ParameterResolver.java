@@ -1,4 +1,4 @@
-package org.talend.sdk.component.studio.model.parameter;
+package org.talend.sdk.component.studio.model.parameter.resolver;
 
 import java.util.Map;
 
