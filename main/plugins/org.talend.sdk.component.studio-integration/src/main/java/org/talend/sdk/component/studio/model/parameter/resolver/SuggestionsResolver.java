@@ -31,33 +31,48 @@ import org.talend.sdk.component.studio.model.parameter.listener.ActionParameters
 
 public class SuggestionsResolver extends AbstractParameterResolver {
     
-    private final ActionReference action;
-    
+    /**
+     * Updates action parameters whenever corresponding ElementParameters are changed
+     */
     private final ActionParametersUpdater updater;
 
     public SuggestionsResolver(final PropertyNode actionOwner, final Collection<ActionReference> actions, final ActionParametersUpdater updater) {
-        super(actionOwner);
+        super(actionOwner, getActionRef(actionOwner, actions));
+        this.updater = updater;
+    }
+    
+    private static ActionReference getActionRef(final PropertyNode actionOwner, final Collection<ActionReference> actions) {
         final String actionName = actionOwner.getProperty().getSuggestions().getName();
-        this.action = actions
+        return actions
                 .stream()
                 .filter(a -> Action.Type.SUGGESTIONS.toString().equals(a.getType()))
                 .filter(a -> a.getName().equals(actionName))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Action with name " + actionName + " wasn't found"));
-        this.updater = updater;
     }
     
+    /**
+     * Finds ElementParameters needed for action call by their relative path.
+     * Registers ActionParameterUpdater to each ElementParameter needed for action call
+     * Creates ActionParameter for each ElementParameter
+     * 
+     * @param settings all "leaf" Component options
+     */
     public void resolveParameters(final Map<String, IElementParameter> settings) {
-        final List<SimplePropertyDefinition> callbackParameters = new ArrayList<>(action.getProperties());
+        final List<SimplePropertyDefinition> callbackParameters = new ArrayList<>(actionRef.getProperties());
         final List<String> relativePaths = actionOwner.getProperty().getSuggestions().getParameters();
+        final String basePath = getOwnerPath();
 
         for (int i = 0; i < relativePaths.size(); i++) {
-            final TaCoKitElementParameter parameter = resolveParameter(relativePaths.get(i), settings);
-            parameter.registerListener(parameter.getName(), updater);
+            final List<TaCoKitElementParameter> parameters = resolveParameters(relativePaths.get(i), settings);
             final String callbackParameter = callbackParameters.get(i).getName();
-            final String initialValue = callbackParameters.get(i).getDefaultValue();
-            final ActionParameter actionParameter = new ActionParameter(parameter.getName(), callbackParameter, initialValue);
-            updater.getAction().addParameter(actionParameter);
+//            final String initialValue = callbackParameters.get(i).getDefaultValue();
+            final String initialValue = "";
+            parameters.forEach(parameter -> {
+                parameter.registerListener(parameter.getName(), updater);
+                final ActionParameter actionParameter = new ActionParameter(parameter.getName(), callbackParameter, initialValue);
+                updater.getAction().addParameter(actionParameter);
+            });
         }
 
     }

@@ -1,13 +1,18 @@
 package org.talend.sdk.component.studio.model.parameter.resolver;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.talend.core.model.process.IElementParameter;
+import org.talend.sdk.component.server.front.model.ActionReference;
+import org.talend.sdk.component.studio.model.parameter.PropertyDefinitionDecorator;
 import org.talend.sdk.component.studio.model.parameter.PropertyNode;
+import org.talend.sdk.component.studio.model.parameter.PropertyTreeCreator;
 import org.talend.sdk.component.studio.model.parameter.TaCoKitElementParameter;
+import org.talend.sdk.component.studio.model.parameter.WidgetTypeMapper;
 
 /**
  * Common super class for ParameterResolvers. It contains common state and functionality
@@ -21,9 +26,11 @@ abstract class AbstractParameterResolver implements ParameterResolver {
      */
     protected final PropertyNode actionOwner;
     
-    AbstractParameterResolver(final PropertyNode actionOwner) {
+    protected final ActionReference actionRef;
+    
+    AbstractParameterResolver(final PropertyNode actionOwner, final ActionReference actionRef) {
         this.actionOwner = actionOwner;
-
+        this.actionRef = actionRef;
     }
     
     protected final TaCoKitElementParameter resolveParameter(final String relativePath, final Map<String, IElementParameter> settings) {
@@ -63,6 +70,18 @@ abstract class AbstractParameterResolver implements ParameterResolver {
      */
     protected final String getOwnerPath() {
         return actionOwner.getProperty().getPath();
+    }
+    
+    /**
+     * Finds action method parameter alias (Option annotation value)
+     * This method builds property tree and assumes that root node path is a required alias
+     * 
+     * @return parameter alias
+     */
+    protected final String getParameterAlias() {
+        final Collection<PropertyDefinitionDecorator> properties = PropertyDefinitionDecorator.wrap(actionRef.getProperties());
+        final PropertyNode root = new PropertyTreeCreator(new WidgetTypeMapper()).createPropertyTree(properties);
+        return root.getProperty().getPath();
     }
     
     /**

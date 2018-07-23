@@ -33,37 +33,37 @@ public class ActionParameter {
     private final String parameter;
 
     /**
-     * Denotes whether associated ElementParameter is set and usable. Once set it can't be
-     * unset
+     * Denotes whether associated ElementParameter is set and ready to be used. 
+     * Once set it can't be unset
      */
-    private boolean hasDirectValue = false;
+    private boolean isSet = false;
 
     /**
      * Parameter value
      */
     private String value;
-
+    
     /**
      * Creates ActionParameter
      * 
      * @param name ElementParameter name
      * @param parameter Action parameter name
-     * @param value initial value, can be null. If it's not null, then it switches ActionParameter to set state
+     * @param initialValue initial value, can be null. If it's not null, then it switches ActionParameter to set state
      */
-    public ActionParameter(final String name, final String parameter, final String value) {
+    public ActionParameter(final String name, final String parameter, final String initialValue) {
         this.name = name;
         this.parameter = parameter;
-        setValue(value);
+        setValue(initialValue);
     }
 
     void setValue(final String newValue) {
         if (newValue != null) {
             this.value = removeQuotes(newValue);
             // todo: if context -> evaluate
-            this.hasDirectValue = !this.value.equals(newValue) || !ContextParameterUtils.containContextVariables(newValue);
+            this.isSet = !this.value.equals(newValue) || !ContextParameterUtils.containContextVariables(newValue);
         } else {
             this.value = null;
-            this.hasDirectValue = false;
+            this.isSet = false;
         }
     }
 
@@ -86,10 +86,11 @@ public class ActionParameter {
     }
 
     /**
-     * Denotes whether associated ElementParameter is set and usable. Once set it can't be unset
+     * Denotes whether associated ElementParameter is set and can be used in action call. 
+     * Once set it can't be unset
      */
-    boolean isHasDirectValue() {
-        return this.hasDirectValue;
+    boolean isSet() {
+        return this.isSet;
     }
 
     /**

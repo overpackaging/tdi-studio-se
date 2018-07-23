@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.talend.sdk.component.studio.Lookups;
 import org.talend.sdk.component.studio.model.action.Action;
+import org.talend.sdk.component.studio.model.action.ActionParameter;
 import org.talend.sdk.component.studio.model.parameter.ValidationLabel;
 
 public class ValidationListener extends Action implements PropertyChangeListener {
@@ -54,6 +55,10 @@ public class ValidationListener extends Action implements PropertyChangeListener
         } else {
             label.showValidation(validation.get(MESSAGE));
         }
+    }
+    
+    private boolean areParametersSet() {
+        return parameters.values().stream().allMatch(ActionParameter::isSet);
     }
 
 }

@@ -44,7 +44,7 @@ public class HealthCheckResolver {
 
     private final String family;
 
-    private final PropertyNode node;
+    private final PropertyNode actionOwner;
 
     private final ActionReference action;
 
@@ -56,7 +56,7 @@ public class HealthCheckResolver {
             final EComponentCategory category, final int rowNumber) {
         this.element = element;
         this.family = family;
-        this.node = node;
+        this.actionOwner = node;
         this.action = action;
         this.category = category;
         this.rowNumber = rowNumber;
@@ -66,14 +66,14 @@ public class HealthCheckResolver {
         final ButtonParameter button = new ButtonParameter(element);
         button.setCategory(category);
         button.setDisplayName(Messages.getString("healthCheck.button"));
-        button.setName(node.getProperty().getPath() + ".testConnection");
+        button.setName(actionOwner.getProperty().getPath() + ".testConnection");
         button.setNumRow(rowNumber);
         button.setShow(true);
-        final String basePath = node.getProperty().getPath();
+        final String basePath = actionOwner.getProperty().getPath();
         final String alias = getParameterAlias();
         final PathCollector collector = new PathCollector();
-        node.accept(collector);
-        final AsyncAction command = new AsyncAction(new Action(node.getProperty().getHealthCheckName(), family, Action.Type.HEALTHCHECK));
+        actionOwner.accept(collector);
+        final AsyncAction command = new AsyncAction(new Action(actionOwner.getProperty().getHealthCheckName(), family, Action.Type.HEALTHCHECK));
         collector.getPaths().stream().map(settings::get).filter(Objects::nonNull).map(p -> (TaCoKitElementParameter) p)
                 .forEach(p -> {
                     final String parameter = p.getName().replace(basePath, alias);
